@@ -1,0 +1,10 @@
+/* Base: design tokens, reset, typography, form fields, page container. Loaded on every page. */
+:root{--ink:#1c2a22;--mute:#5b6b61;--bg:#f2f6f0;--card:#fff;--green:#24432f;--poppy:#d2342b;--line:#dbe4d8;--r:14px}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.6 'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.15}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--poppy);outline-offset:2px}
+main{max-width:1100px;margin:auto;padding:28px 20px 60px;min-height:70vh}
+input,select,textarea{font:inherit;padding:9px 12px;border:1px solid #c5d1c2;border-radius:10px;background:#fff;color:var(--ink);max-width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap}
