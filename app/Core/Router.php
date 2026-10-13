@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Core;
@@ -20,21 +21,29 @@ class Router
     /** @var array<string, array<int, array{regex:string, handler:string}>> */
     private array $routes = [];
 
-    public function get(string $path, string $handler): void
+    public function get(string $path, string $handler, array $middleware = []): void
     {
-        $this->add('GET', $path, $handler);
+        $this->add('GET', $path, $handler, $middleware);
     }
 
-    public function post(string $path, string $handler): void
+    public function post(string $path, string $handler, array $middleware = []): void
     {
-        $this->add('POST', $path, $handler);
+        $this->add('POST', $path, $handler, $middleware);
     }
 
-    private function add(string $method, string $path, string $handler): void
-    {
+    private function add(
+        string $method,
+        string $path,
+        string $handler,
+        array $middleware
+    ): void {
         // '/flowers/{slug}' -> '#^/flowers/(?P<slug>[^/]+)$#'
         $regex = '#^' . preg_replace('#\{(\w+)\}#', '(?P<$1>[^/]+)', $path) . '$#';
-        $this->routes[$method][] = ['regex' => $regex, 'handler' => $handler];
+        $this->routes[$method][] = [
+            'regex' => $regex,
+            'handler' => $handler,
+            'middleware' => $middleware
+        ];
     }
 
     public function dispatch(string $method, string $uri): void
@@ -44,6 +53,12 @@ class Router
         foreach ($this->routes[strtoupper($method)] ?? [] as $route) {
             if (preg_match($route['regex'], $path, $matches)) {
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+
+                // 🔐 Run middleware BEFORE controller
+                foreach ($route['middleware'] as $middlewareClass) {
+                    (new $middlewareClass())->validateJWT();
+                }
+
                 $this->call($route['handler'], array_values($params));
                 return;
             }
