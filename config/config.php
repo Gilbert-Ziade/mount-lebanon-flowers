@@ -9,8 +9,7 @@ return [
         'instagram' => 'https://instagram.com/',
         'facebook'  => 'https://facebook.com/',
         'youtube'   => 'https://youtube.com/',
-    ],
-    'regions' => ['Baskinta', 'Rechmaya', 'Chahtoul', 'Faraya'],
+    ]
 ];
 
 

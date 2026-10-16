@@ -60,4 +60,4 @@ public/assets/css/
 
 ## Moving to a real database later
 
-Only the methods in `app/Models/Flower.php` and `Region.php` change (`all`, `findBySlug`, `search`, `first`, `recent`). Controllers, views and the API keep working as long as each flower array keeps the same keys.
+Only the methods in `app/Models/Flower/Flower.php` and `Region.php` change (`all`, `findBySlug`, `search`, `first`, `recent`). Controllers, views and the API keep working as long as each flower array keeps the same keys.
