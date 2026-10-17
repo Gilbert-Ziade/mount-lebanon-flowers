@@ -132,4 +132,10 @@ class FlowerQuery
     {
         return "DELETE FROM " . $table . " WHERE " . Flower::FLOWER_ID_LABEL . " = ?";
     }
+
+    public static string $DeleteImage = "DELETE FROM " . Flower::FLOWER_IMAGES_TABLE_LABEL
+        . " WHERE " . Flower::FLOWER_ID_LABEL . " = ? AND " . Flower::FILE_LABEL . " = ?";
+
+    public static string $NextImageOrder = "SELECT COALESCE(MAX(" . Flower::SORT_ORDER_LABEL . "), -1) + 1 FROM "
+        . Flower::FLOWER_IMAGES_TABLE_LABEL . " WHERE " . Flower::FLOWER_ID_LABEL . " = ?";
 }

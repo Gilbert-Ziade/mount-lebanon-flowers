@@ -108,3 +108,9 @@ function slugify(string $text): string
 {
     return trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($text)), '-') ?: 'item';
 }
+
+/** Public URL of a stored image (file name or full URL). */
+function image_src(string $file): string
+{
+    return preg_match('#^(https?:)?//|^/#', $file) ? $file : asset('img/flowers/' . $file);
+}

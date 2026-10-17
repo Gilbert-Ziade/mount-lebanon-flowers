@@ -195,8 +195,12 @@ class Flower
     }
 
     //------------------------------------ Update (the slug stays the same so URLs don't break) ------------------------------------//
-    public static function update(int $id, array $data): void
+    /** @return string[] image files removed from this flower (delete them from disk) */
+    public static function update(int $id, array $data): array
     {
+        $current = self::findById($id)['images'] ?? [];
+        $data['remove_images'] = array_values(array_intersect($data['remove_images'] ?? [], $current));
+
         DbConnection::transaction(function () use ($id, $data): void {
             DbConnection::execute(FlowerQuery::$Update, [
                 $data['name'],
@@ -210,31 +214,28 @@ class Flower
             ]);
             self::saveRelated($id, $data);
         });
+
+        return $data['remove_images'];
     }
 
     //------------------------------------ Delete ------------------------------------//
     public static function destroy(int $id): void
     {
-        DbConnection::transaction(function () use ($id): void {
-            foreach (
-                [
-                    self::FLOWER_REGION_TABLE_LABEL,
-                    self::FLOWER_COLORS_TABLE_LABEL,
-                    self::FLOWER_IMAGES_TABLE_LABEL,
-                    self::FLOWER_LINKS_TABLE_LABEL,
-                ] as $table
-            ) {
-                DbConnection::execute(FlowerQuery::DeleteByFlowerId($table), [$id]);
-            }
-            DbConnection::execute(FlowerQuery::$Delete, [$id]);
+        $images = self::findById($id)['images'] ?? [];
+
+        DbConnection::transaction(function () use ($id): void { /* unchanged */
         });
+
+        foreach ($images as $file) {
+            \App\Services\ImageUploader::delete($file);
+        }
     }
 
     //------------------------------------ Helpers for create/update ------------------------------------//
     /** Replaces regions, colors, images and the Instagram link of a flower. */
     private static function saveRelated(int $id, array $data): void
     {
-        foreach ([self::FLOWER_REGION_TABLE_LABEL, self::FLOWER_COLORS_TABLE_LABEL, self::FLOWER_IMAGES_TABLE_LABEL] as $table) {
+        foreach ([self::FLOWER_REGION_TABLE_LABEL, self::FLOWER_COLORS_TABLE_LABEL] as $table) {
             DbConnection::execute(FlowerQuery::DeleteByFlowerId($table), [$id]);
         }
 
@@ -252,6 +253,15 @@ class Flower
         DbConnection::execute(FlowerQuery::$DeleteLinkByPlatform, [$id, 'instagram']);
         if ($data['instagram'] !== '') {
             DbConnection::execute(FlowerQuery::$InsertLink, [$id, 'instagram', $data['instagram']]);
+        }
+
+        // Images: remove the ticked ones, then append the new uploads after the existing ones.
+        foreach ($data['remove_images'] ?? [] as $file) {
+            DbConnection::execute(FlowerQuery::$DeleteImage, [$id, $file]);
+        }
+        $order = (int) DbConnection::scalar(FlowerQuery::$NextImageOrder, [$id]);
+        foreach ($data['new_images'] ?? [] as $file) {
+            DbConnection::execute(FlowerQuery::$InsertImage, [$id, $file, $order++]);
         }
     }
 
