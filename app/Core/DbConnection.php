@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Core;
@@ -28,7 +29,7 @@ class DbConnection
     private static ?PDO $pdo = null;
 
     /** Connection, opened lazily on first use. */
-    public static function connection(): PDO
+    /*public static function connection(): PDO
     {
         if (self::$pdo === null) {
             // DB_* constants are defined by config/config.php, which config() loads once.
@@ -51,6 +52,45 @@ class DbConnection
                 // Log the real reason, show a generic message to the visitor.
                 error_log('DB connection failed: ' . $e->getMessage());
                 throw new RuntimeException('Database connection failed.', 0, $e);
+            }
+        }
+
+        return self::$pdo;
+    }*/
+
+    public static function connection(): PDO
+    {
+        if (self::$pdo === null) {
+            config('site_name');
+
+            $dsn = sprintf(
+                'pgsql:host=%s;port=%s;dbname=%s',
+                DB_HOST,
+                DB_PORT ?: '5432',
+                DB_NAME
+            );
+
+            try {
+                self::$pdo = new PDO(
+                    $dsn,
+                    (string) DB_USER,
+                    (string) DB_PASS,
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                    ]
+                );
+            } catch (PDOException $e) {
+                error_log(
+                    'DB connection failed: ' . $e->getMessage()
+                );
+
+                throw new RuntimeException(
+                    'Database connection failed.',
+                    0,
+                    $e
+                );
             }
         }
 

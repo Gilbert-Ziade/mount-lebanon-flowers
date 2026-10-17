@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\View;
-use App\Models\Flower;
-use App\Models\Region;
+use App\Models\Flower\Flower;
+use App\Models\Region\Region;
 
 class PageController
 {

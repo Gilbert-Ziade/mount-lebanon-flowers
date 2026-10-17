@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Flower;
+
+use App\Models\Region\Region;
 
 use App\Core\DbConnection;
 

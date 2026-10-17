@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Response;
 use App\Core\View;
-use App\Models\Region;
+use App\Models\Region\Region;
 use App\Services\WhatsApp;
 
 class MissingFlowerController

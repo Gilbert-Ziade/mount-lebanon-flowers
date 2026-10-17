@@ -1,6 +1,6 @@
 <?php
 // Site-wide settings. Change these values; nothing else needs editing.
-return [
+/*return [
     'site_name'       => 'Mount Lebanon Flora',
     'site_title'      => 'Wild Flowers of Mount Lebanon',
     'base_url'        => '',                 // '' if served at the domain root, e.g. '/flowers-site' if in a sub-folder
@@ -10,7 +10,7 @@ return [
         'facebook'  => 'https://facebook.com/',
         'youtube'   => 'https://youtube.com/',
     ]
-];
+];*/
 
 
 function loadEnv(string $path): void
@@ -41,7 +41,7 @@ function loadEnv(string $path): void
 }
 
 // Point to the .env in project root, relative to this file's location
-loadEnv(__DIR__ . '/../.env');
+loadEnv(__DIR__ . '/../.dev.env');
 
 // TODO
 define('DB_HOST', getenv('DB_HOST'));

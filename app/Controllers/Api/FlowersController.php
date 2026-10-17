@@ -5,8 +5,8 @@ namespace App\Controllers\Api;
 
 use App\Core\Request;
 use App\Core\Response;
-use App\Models\Flower;
-use App\Models\Region;
+use App\Models\Flower\Flower;
+use App\Models\Region\Region;
 
 class FlowersController
 {

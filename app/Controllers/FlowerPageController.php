@@ -5,8 +5,8 @@ namespace App\Controllers;
 
 use App\Core\Response;
 use App\Core\View;
-use App\Models\Flower;
-use App\Models\Region;
+use App\Models\Flower\Flower;
+use App\Models\Region\Region;
 
 class FlowerPageController
 {
