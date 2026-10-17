@@ -1,3 +1,12 @@
 /* All flowers page: search and filter bar. (The card grid lives in components.css.) */
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 22px}
-.filters input{flex:1;min-width:200px}
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0 22px
+}
+
+.filters input {
+    flex: 1;
+    min-width: 200px
+}

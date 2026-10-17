@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models\Flower;
@@ -125,7 +126,7 @@ class Flower
             return [];
         }
 
-        $ids   = array_map(fn (array $r): int => (int) $r[self::ID_LABEL], $rows);
+        $ids   = array_map(fn(array $r): int => (int) $r[self::ID_LABEL], $rows);
         $count = count($ids);
 
         $regions = $colors = $images = $links = [];
@@ -164,5 +165,104 @@ class Flower
                 self::LINKS_LABEL           => $links[$id] ?? [],
             ];
         }, $rows);
+    }
+
+    //------------------------------------ Get flower by id ------------------------------------//
+    public static function findById(int $id): ?array
+    {
+        $row = DbConnection::selectOne(FlowerQuery::$GetById, [$id]);
+        return $row === null ? null : self::hydrate([$row])[0];
+    }
+
+    //------------------------------------ Create ------------------------------------//
+    /** @param array $data keys: name, scientific_name, description, benefits, edible (0/1), season, location, instagram, regions[], colors[], images[] */
+    public static function create(array $data): int
+    {
+        return DbConnection::transaction(function () use ($data): int {
+            $id = (int) DbConnection::scalar(FlowerQuery::$Insert, [
+                self::uniqueSlug($data['name']),
+                $data['name'],
+                $data['scientific_name'],
+                $data['description'],
+                $data['benefits'],
+                $data['edible'],
+                $data['season'],
+                $data['location'],
+            ]);
+            self::saveRelated($id, $data);
+            return $id;
+        });
+    }
+
+    //------------------------------------ Update (the slug stays the same so URLs don't break) ------------------------------------//
+    public static function update(int $id, array $data): void
+    {
+        DbConnection::transaction(function () use ($id, $data): void {
+            DbConnection::execute(FlowerQuery::$Update, [
+                $data['name'],
+                $data['scientific_name'],
+                $data['description'],
+                $data['benefits'],
+                $data['edible'],
+                $data['season'],
+                $data['location'],
+                $id,
+            ]);
+            self::saveRelated($id, $data);
+        });
+    }
+
+    //------------------------------------ Delete ------------------------------------//
+    public static function destroy(int $id): void
+    {
+        DbConnection::transaction(function () use ($id): void {
+            foreach (
+                [
+                    self::FLOWER_REGION_TABLE_LABEL,
+                    self::FLOWER_COLORS_TABLE_LABEL,
+                    self::FLOWER_IMAGES_TABLE_LABEL,
+                    self::FLOWER_LINKS_TABLE_LABEL,
+                ] as $table
+            ) {
+                DbConnection::execute(FlowerQuery::DeleteByFlowerId($table), [$id]);
+            }
+            DbConnection::execute(FlowerQuery::$Delete, [$id]);
+        });
+    }
+
+    //------------------------------------ Helpers for create/update ------------------------------------//
+    /** Replaces regions, colors, images and the Instagram link of a flower. */
+    private static function saveRelated(int $id, array $data): void
+    {
+        foreach ([self::FLOWER_REGION_TABLE_LABEL, self::FLOWER_COLORS_TABLE_LABEL, self::FLOWER_IMAGES_TABLE_LABEL] as $table) {
+            DbConnection::execute(FlowerQuery::DeleteByFlowerId($table), [$id]);
+        }
+
+        foreach ($data['regions'] as $name) {
+            DbConnection::execute(FlowerQuery::$InsertRegionLink, [$id, Region::findOrCreate($name)]);
+        }
+        foreach ($data['colors'] as $i => $hex) {
+            DbConnection::execute(FlowerQuery::$InsertColor, [$id, $hex, $i]);
+        }
+        foreach ($data['images'] as $i => $file) {
+            DbConnection::execute(FlowerQuery::$InsertImage, [$id, $file, $i]);
+        }
+
+        // Only the Instagram link is managed here; other platforms stay untouched.
+        DbConnection::execute(FlowerQuery::$DeleteLinkByPlatform, [$id, 'instagram']);
+        if ($data['instagram'] !== '') {
+            DbConnection::execute(FlowerQuery::$InsertLink, [$id, 'instagram', $data['instagram']]);
+        }
+    }
+
+    /** "Red poppy" -> "red-poppy", or "red-poppy-2" if that slug already exists. */
+    private static function uniqueSlug(string $name): string
+    {
+        $base = slugify($name);
+        $slug = $base;
+        for ($i = 2; DbConnection::scalar(FlowerQuery::$SlugExists, [$slug]) !== null; $i++) {
+            $slug = $base . '-' . $i;
+        }
+        return $slug;
     }
 }

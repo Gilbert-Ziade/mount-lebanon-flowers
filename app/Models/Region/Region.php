@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models\Region;
@@ -30,9 +31,19 @@ class Region
     /** @return array<int, array{name:string, count:int}> */
     public static function withCounts(): array
     {
-        return array_map(fn (array $r): array => [
+        return array_map(fn(array $r): array => [
             self::NAME_LABEL  => $r[self::NAME_LABEL],
             self::COUNT_LABEL => (int) $r[self::COUNT_LABEL],
         ], DbConnection::select(RegionQuery::$GetWithCounts));
+    }
+
+    //------------------------------------ Find or create a region ------------------------------------//
+    public static function findOrCreate(string $name): int
+    {
+        $id = DbConnection::scalar(RegionQuery::$GetIdByName, [$name]);
+        if ($id !== null) {
+            return (int) $id;
+        }
+        return (int) DbConnection::scalar(RegionQuery::$Insert, [$name, slugify($name)]);
     }
 }

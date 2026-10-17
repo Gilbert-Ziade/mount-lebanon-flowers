@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models\Flower;
@@ -17,7 +18,7 @@ class FlowerQuery
 
     // SEARCH conditions (the flowers table is aliased "f" in Search())
     public static string $WhereRegion =
-        "EXISTS (SELECT 1 FROM " . Flower::FLOWER_REGION_TABLE_LABEL . " fr"
+    "EXISTS (SELECT 1 FROM " . Flower::FLOWER_REGION_TABLE_LABEL . " fr"
         . " JOIN " . Region::TABLE_LABEL . " r ON r." . Region::ID_LABEL . " = fr." . Flower::REGION_ID_LABEL
         . " WHERE fr." . Flower::FLOWER_ID_LABEL . " = f." . Flower::ID_LABEL
         . " AND r." . Region::NAME_LABEL . " = ?)";
@@ -25,7 +26,7 @@ class FlowerQuery
     public static string $WhereEdible = "f." . Flower::EDIBLE_LABEL . " = ?";
 
     public static string $WhereTerm =
-        "(f." . Flower::NAME_LABEL . " LIKE ?"
+    "(f." . Flower::NAME_LABEL . " LIKE ?"
         . " OR f." . Flower::SCIENTIFIC_NAME_LABEL . " LIKE ?"
         . " OR f." . Flower::DESCRIPTION_LABEL . " LIKE ?)";
 
@@ -89,5 +90,46 @@ class FlowerQuery
     private static function Placeholders(int $count): string
     {
         return implode(",", array_fill(0, max(1, $count), "?"));
+    }
+
+    // ADMIN: read
+    public static string $GetById    = "SELECT * FROM " . Flower::TABLE_LABEL . " WHERE " . Flower::ID_LABEL . " = ?";
+    public static string $SlugExists = "SELECT 1 FROM " . Flower::TABLE_LABEL . " WHERE " . Flower::SLUG_LABEL . " = ?";
+
+    // ADMIN: write
+    public static string $Insert = "INSERT INTO " . Flower::TABLE_LABEL . " ("
+        . Flower::SLUG_LABEL . ", " . Flower::NAME_LABEL . ", " . Flower::SCIENTIFIC_NAME_LABEL . ", "
+        . Flower::DESCRIPTION_LABEL . ", " . Flower::BENEFITS_LABEL . ", " . Flower::EDIBLE_LABEL . ", "
+        . Flower::SEASON_LABEL . ", " . Flower::LOCATION_LABEL
+        . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING " . Flower::ID_LABEL;
+
+    public static string $Update = "UPDATE " . Flower::TABLE_LABEL . " SET "
+        . Flower::NAME_LABEL . " = ?, " . Flower::SCIENTIFIC_NAME_LABEL . " = ?, "
+        . Flower::DESCRIPTION_LABEL . " = ?, " . Flower::BENEFITS_LABEL . " = ?, "
+        . Flower::EDIBLE_LABEL . " = ?, " . Flower::SEASON_LABEL . " = ?, "
+        . Flower::LOCATION_LABEL . " = ?, " . Flower::UPDATED_AT_LABEL . " = NOW()"
+        . " WHERE " . Flower::ID_LABEL . " = ?";
+
+    public static string $Delete = "DELETE FROM " . Flower::TABLE_LABEL . " WHERE " . Flower::ID_LABEL . " = ?";
+
+    public static string $InsertRegionLink = "INSERT INTO " . Flower::FLOWER_REGION_TABLE_LABEL
+        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::REGION_ID_LABEL . ") VALUES (?, ?)";
+
+    public static string $InsertColor = "INSERT INTO " . Flower::FLOWER_COLORS_TABLE_LABEL
+        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::HEX_LABEL . ", " . Flower::SORT_ORDER_LABEL . ") VALUES (?, ?, ?)";
+
+    public static string $InsertImage = "INSERT INTO " . Flower::FLOWER_IMAGES_TABLE_LABEL
+        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::FILE_LABEL . ", " . Flower::SORT_ORDER_LABEL . ") VALUES (?, ?, ?)";
+
+    public static string $InsertLink = "INSERT INTO " . Flower::FLOWER_LINKS_TABLE_LABEL
+        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::PLATFORM_LABEL . ", " . Flower::URL_LABEL . ") VALUES (?, ?, ?)";
+
+    public static string $DeleteLinkByPlatform = "DELETE FROM " . Flower::FLOWER_LINKS_TABLE_LABEL
+        . " WHERE " . Flower::FLOWER_ID_LABEL . " = ? AND " . Flower::PLATFORM_LABEL . " = ?";
+
+    /** DELETE all rows of a related table for one flower. Pass one of the Flower::*_TABLE_LABEL constants. */
+    public static function DeleteByFlowerId(string $table): string
+    {
+        return "DELETE FROM " . $table . " WHERE " . Flower::FLOWER_ID_LABEL . " = ?";
     }
 }

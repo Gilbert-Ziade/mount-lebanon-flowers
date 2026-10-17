@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /** Read a value from config/config.php, e.g. config('social.instagram'). */
@@ -47,14 +48,18 @@ function flower_art(array $colors, int $size = 120, int $variant = 0): string
     for ($i = 0; $i < $n; $i++) {
         $petals .= sprintf(
             '<ellipse cx="50" cy="26" rx="%d" ry="19" fill="%s" opacity=".92" transform="rotate(%s 50 50)"/>',
-            $rx, e($c), round($i * 360 / $n, 2)
+            $rx,
+            e($c),
+            round($i * 360 / $n, 2)
         );
     }
     $center = ($c2 === $c) ? '#f5d547' : $c2;
 
     return sprintf(
         '<svg width="%1$d" height="%1$d" viewBox="0 0 100 100" role="img" aria-label="Illustration of the flower">%2$s<circle cx="50" cy="50" r="9" fill="%3$s"/></svg>',
-        $size, $petals, e($center)
+        $size,
+        $petals,
+        e($center)
     );
 }
 
@@ -96,4 +101,10 @@ function edible_tag(array $flower): string
     return $flower['edible']
         ? '<span class="tag">Edible</span>'
         : '<span class="tag no">Not edible</span>';
+}
+
+/** "Wild thyme (Za'atar)" -> "wild-thyme-za-atar" */
+function slugify(string $text): string
+{
+    return trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($text)), '-') ?: 'item';
 }

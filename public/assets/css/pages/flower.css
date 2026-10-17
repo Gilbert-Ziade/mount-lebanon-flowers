@@ -1,17 +1,106 @@
 /* Single flower page: gallery, facts list and breadcrumb. */
-.crumb{font-size:.9rem;margin-bottom:14px;display:block;color:var(--mute)}
-.detail{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-.detail h1{font-size:2.4rem}
-.detail .big{border-radius:var(--r);height:380px;display:grid;place-items:center;border:1px solid var(--line)}
-.gallery .big{overflow:hidden}
-.gallery .big img{width:100%;height:100%;object-fit:cover;display:block}
-.slide{width:100%;height:100%;display:grid;place-items:center}
-.slide[hidden]{display:none}
-.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.thumbs button{width:70px;height:70px;padding:0;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;overflow:hidden;display:grid;place-items:center}
-.thumbs button.on{border-color:var(--poppy)}
-.thumbs img{width:100%;height:100%;object-fit:cover}
-.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:18px 0;padding:16px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
-.facts dt{font-weight:700}.facts dd{margin:0}
+.crumb {
+    font-size: .9rem;
+    margin-bottom: 14px;
+    display: block;
+    color: var(--mute)
+}
 
-@media(max-width:760px){.detail{grid-template-columns:1fr}.detail .big{height:260px}}
+.detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px
+}
+
+.detail h1 {
+    font-size: 2.4rem
+}
+
+.detail .big {
+    border-radius: var(--r);
+    height: 380px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line)
+}
+
+.gallery .big {
+    overflow: hidden
+}
+
+.gallery .big img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center
+}
+
+.slide[hidden] {
+    display: none
+}
+
+.thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap
+}
+
+.thumbs button {
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    display: grid;
+    place-items: center
+}
+
+.thumbs button.on {
+    border-color: var(--poppy)
+}
+
+.thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 18px;
+    margin: 18px 0;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r)
+}
+
+.facts dt {
+    font-weight: 700
+}
+
+.facts dd {
+    margin: 0
+}
+
+@media(max-width:760px) {
+    .detail {
+        grid-template-columns: 1fr
+    }
+
+    .detail .big {
+        height: 260px
+    }
+}

@@ -28,4 +28,9 @@
       thumbs.forEach(function (b) { b.classList.toggle('on', b === btn); });
     });
   });
+
+  // ----- Confirm before destructive actions: <form data-confirm="Delete X?"> -----
+  document.querySelectorAll('form[data-confirm]').forEach(function (f) {
+    f.addEventListener('submit', function (e) { if (!confirm(f.dataset.confirm)) e.preventDefault(); });
+  });
 })();
