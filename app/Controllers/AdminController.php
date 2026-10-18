@@ -9,6 +9,7 @@ use App\Core\Response;
 use App\Core\View;
 use App\Models\Flower\Flower;
 use App\Services\ImageUploader;
+use App\Models\Region\Region;
 
 class AdminController
 {
@@ -18,11 +19,13 @@ class AdminController
         $editId = (int) ($_GET['edit'] ?? 0);
 
         return View::render('pages/admin', [
-            'title'   => 'Admin · ' . config('site_title'),
-            'active'  => 'admin',
-            'styles'  => ['admin'],
-            'flowers' => Flower::all(),
-            'edit'    => $editId ? Flower::findById($editId) : null,
+            'title'          => 'Admin · ' . config('site_title'),
+            'active'         => 'admin',
+            'styles'         => ['admin'],
+            'flowers'        => Flower::all(),
+            'edit'           => $editId ? Flower::findById($editId) : null,
+            'regionNames'    => Region::names(),
+            'regionsEnabled' => (bool) config('admin_region_select', false),
         ]);
     }
 
@@ -34,6 +37,12 @@ class AdminController
         $list    = fn(string $key): array => array_values(array_unique(array_filter(
             array_map('trim', explode(',', $text($key)))
         )));
+        $regions = config('admin_region_select', false)
+            ? array_values(array_intersect(
+                array_map('strval', (array) $request->input('regions', [])),
+                Region::names()
+            ))
+            : [(string) config('default_region')];
 
         $data = [
             'name'            => $text('name'),
@@ -44,7 +53,7 @@ class AdminController
             'season'          => $text('season'),
             'location'        => $text('location'),
             'instagram'       => $text('instagram'),
-            'regions'         => $list('regions'),
+            'regions'         => $regions,
             'colors'          => $list('colors'),
             'images'          => $list('images'),
         ];

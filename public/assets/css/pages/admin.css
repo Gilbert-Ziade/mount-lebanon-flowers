@@ -59,3 +59,30 @@ td {
     border-radius: 10px;
     border: 1px solid var(--line)
 }
+
+.region-pick {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px
+}
+
+.region-pick legend {
+    font-weight: 700;
+    font-size: .9rem;
+    padding: 0 6px
+}
+
+.region-pick label {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400
+}
+
+.region-pick[disabled] {
+    opacity: .6
+}

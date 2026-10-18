@@ -11,7 +11,20 @@
         <div class="form-grid">
             <label>Name<input name="name" required value="<?= e($edit['name'] ?? '') ?>"></label>
             <label>Scientific name<input name="scientific_name" value="<?= e($edit['scientific_name'] ?? '') ?>"></label>
-            <label>Regions (comma separated)<input name="regions" value="<?= e(implode(', ', $edit['regions'] ?? [])) ?>"></label>
+            <?php
+            $default = (string) config('default_region');
+            $options = $regionsEnabled ? $regionNames : [$default];
+            $picked  = $regionsEnabled ? ($edit['regions'] ?? []) : [$default];
+            ?>
+            <fieldset class="region-pick full" <?= $regionsEnabled ? '' : 'disabled' ?>>
+                <legend>Regions<?= $regionsEnabled ? '' : ' (locked to ' . e($default) . ' for now)' ?></legend>
+                <?php foreach ($options as $name): ?>
+                    <label>
+                        <input type="checkbox" name="regions[]" value="<?= e($name) ?>" <?= in_array($name, $picked, true) ? 'checked' : '' ?>>
+                        <?= e($name) ?>
+                    </label>
+                <?php endforeach; ?>
+            </fieldset>
             <label>Colors (hex, comma separated)<input name="colors" placeholder="#e8a1c4, #ffffff" value="<?= e(implode(', ', $edit['colors'] ?? [])) ?>"></label>
             <label>Edible
                 <select name="edible">

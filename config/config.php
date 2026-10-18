@@ -50,5 +50,7 @@ return [
         'instagram' => 'https://instagram.com/',
         'facebook'  => 'https://facebook.com/',
         'youtube'   => 'https://youtube.com/',
-    ]
+    ],
+    'admin_region_select' => false,        // false = locked to default_region, true = multi-select
+    'default_region'      => 'Rechmaya'
 ];
