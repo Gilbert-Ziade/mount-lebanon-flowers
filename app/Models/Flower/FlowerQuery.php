@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Flower;
 
+use App\Models\Platform\Platform;
 use App\Models\Region\Region;
 
 /**
@@ -80,10 +81,13 @@ class FlowerQuery
 
     public static function GetLinksByFlowerIds(int $count): string
     {
-        return "SELECT " . Flower::FLOWER_ID_LABEL . ", " . Flower::PLATFORM_LABEL . ", " . Flower::URL_LABEL
-            . " FROM " . Flower::FLOWER_LINKS_TABLE_LABEL
-            . " WHERE " . Flower::FLOWER_ID_LABEL . " IN (" . self::Placeholders($count) . ")"
-            . " ORDER BY " . Flower::ID_LABEL;
+        return "SELECT fl." . Flower::FLOWER_ID_LABEL
+            . ", p." . Platform::NAME_LABEL . " AS " . Flower::PLATFORM_LABEL
+            . ", fl." . Flower::URL_LABEL
+            . " FROM " . Flower::FLOWER_LINKS_TABLE_LABEL . " fl"
+            . " JOIN " . Platform::TABLE_LABEL . " p ON p." . Platform::ID_LABEL . " = fl." . Flower::PLATFORM_ID_LABEL
+            . " WHERE fl." . Flower::FLOWER_ID_LABEL . " IN (" . self::Placeholders($count) . ")"
+            . " ORDER BY p." . Platform::ID_LABEL;
     }
 
     /** "?,?,?" for an IN (...) list. */
@@ -122,7 +126,7 @@ class FlowerQuery
         . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::FILE_LABEL . ", " . Flower::SORT_ORDER_LABEL . ") VALUES (?, ?, ?)";
 
     public static string $InsertLink = "INSERT INTO " . Flower::FLOWER_LINKS_TABLE_LABEL
-        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::PLATFORM_LABEL . ", " . Flower::URL_LABEL . ") VALUES (?, ?, ?)";
+        . " (" . Flower::FLOWER_ID_LABEL . ", " . Flower::PLATFORM_ID_LABEL . ", " . Flower::URL_LABEL . ") VALUES (?, ?, ?)";
 
     public static string $DeleteLinkByPlatform = "DELETE FROM " . Flower::FLOWER_LINKS_TABLE_LABEL
         . " WHERE " . Flower::FLOWER_ID_LABEL . " = ? AND " . Flower::PLATFORM_LABEL . " = ?";

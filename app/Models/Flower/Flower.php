@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Flower;
 
 use App\Models\Region\Region;
-
+use App\Models\Platform\Platform;
 use App\Core\DbConnection;
 
 /**
@@ -51,8 +51,10 @@ class Flower
     public const HEX_LABEL        = 'hex';
     public const FILE_LABEL       = 'file';
     public const SORT_ORDER_LABEL = 'sort_order';
-    public const PLATFORM_LABEL   = 'platform';
     public const URL_LABEL        = 'url';
+
+    public const PLATFORM_ID_LABEL = 'platform_id';
+    public const PLATFORM_LABEL   = 'platform';
 
     //------------------------------------ Get all flowers ------------------------------------//
     /** @return array<int, array> */
@@ -144,7 +146,7 @@ class Flower
         }
 
         foreach (DbConnection::select(FlowerQuery::GetLinksByFlowerIds($count), $ids) as $r) {
-            $links[(int) $r[self::FLOWER_ID_LABEL]][$r[self::PLATFORM_LABEL]] = $r[self::URL_LABEL];
+            $links[(int) $r[self::FLOWER_ID_LABEL]][strtolower($r[self::PLATFORM_LABEL])] = $r[self::URL_LABEL];
         }
 
         return array_map(function (array $r) use ($regions, $colors, $images, $links): array {
@@ -223,7 +225,8 @@ class Flower
     {
         $images = self::findById($id)['images'] ?? [];
 
-        DbConnection::transaction(function () use ($id): void { /* unchanged */
+        DbConnection::transaction(function () use ($id): void {
+            DbConnection::execute(FlowerQuery::$Delete, [$id]);
         });
 
         foreach ($images as $file) {
@@ -235,7 +238,14 @@ class Flower
     /** Replaces regions, colors, images and the Instagram link of a flower. */
     private static function saveRelated(int $id, array $data): void
     {
-        foreach ([self::FLOWER_REGION_TABLE_LABEL, self::FLOWER_COLORS_TABLE_LABEL] as $table) {
+        // before: only regions + colors were deleted
+        foreach (
+            [
+                self::FLOWER_REGION_TABLE_LABEL,
+                self::FLOWER_COLORS_TABLE_LABEL,
+                self::FLOWER_LINKS_TABLE_LABEL,
+            ] as $table
+        ) {
             DbConnection::execute(FlowerQuery::DeleteByFlowerId($table), [$id]);
         }
 
@@ -249,10 +259,9 @@ class Flower
             DbConnection::execute(FlowerQuery::$InsertImage, [$id, $file, $i]);
         }
 
-        // Only the Instagram link is managed here; other platforms stay untouched.
-        DbConnection::execute(FlowerQuery::$DeleteLinkByPlatform, [$id, 'instagram']);
-        if ($data['instagram'] !== '') {
-            DbConnection::execute(FlowerQuery::$InsertLink, [$id, 'instagram', $data['instagram']]);
+        // replaces the "Instagram link" block
+        foreach ($data['links'] ?? [] as $platformId => $url) {
+            DbConnection::execute(FlowerQuery::$InsertLink, [$id, (int) $platformId, $url]);
         }
 
         // Images: remove the ticked ones, then append the new uploads after the existing ones.

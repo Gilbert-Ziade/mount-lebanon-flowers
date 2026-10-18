@@ -34,7 +34,12 @@
             </label>
             <label>Season<input name="season" value="<?= e($edit['season'] ?? '') ?>"></label>
             <label>Where to find it<input name="location" value="<?= e($edit['location'] ?? '') ?>"></label>
-            <label>Instagram link<input name="instagram" value="<?= e($edit['links']['instagram'] ?? '') ?>"></label>
+            <?php foreach ($platforms as $p): ?>
+                <label><?= e($p['name']) ?> link (optional)
+                    <input type="url" name="links[<?= (int) $p['id'] ?>]" placeholder="https://..."
+                        value="<?= e($edit['links'][strtolower($p['name'])] ?? '') ?>">
+                </label>
+            <?php endforeach; ?>
             <?php if (!empty($edit['images'])): ?>
                 <div class="full">
                     <b>Current images</b> <span class="sci">(tick the ones to remove; the first is the main image)</span>

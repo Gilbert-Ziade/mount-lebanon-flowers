@@ -26,18 +26,22 @@ $socials = ['instagram' => 'Instagram', 'facebook' => 'Facebook', 'youtube' => '
     <div class="sci"><?= e($flower['scientific_name']) ?></div>
     <p style="margin-top:12px"><?= e($flower['description']) ?></p>
     <dl class="facts">
-      <dt>Edible</dt><dd><?= $flower['edible'] ? 'Yes, see notes below' : 'No' ?></dd>
-      <dt>Colors</dt><dd><?= color_dots($flower) ?></dd>
-      <dt>Season</dt><dd><?= e($flower['season']) ?></dd>
-      <dt>Regions</dt><dd><?= e(implode(', ', $flower['regions'])) ?></dd>
-      <dt>Where to find it</dt><dd><?= e($flower['location']) ?></dd>
-      <dt>Benefits</dt><dd><?= e($flower['benefits']) ?></dd>
+      <dt>Edible</dt>
+      <dd><?= $flower['edible'] ? 'Yes, see notes below' : 'No' ?></dd>
+      <dt>Colors</dt>
+      <dd><?= color_dots($flower) ?></dd>
+      <dt>Season</dt>
+      <dd><?= e($flower['season']) ?></dd>
+      <dt>Regions</dt>
+      <dd><?= e(implode(', ', $flower['regions'])) ?></dd>
+      <dt>Where to find it</dt>
+      <dd><?= e($flower['location']) ?></dd>
+      <dt>Benefits</dt>
+      <dd><?= e($flower['benefits']) ?></dd>
     </dl>
     <div class="row">
-      <?php foreach ($socials as $key => $label): ?>
-        <?php if (!empty($flower['links'][$key])): ?>
-          <a class="btn alt sm" href="<?= e($flower['links'][$key]) ?>" target="_blank" rel="noopener"><?= e($label) ?></a>
-        <?php endif; ?>
+      <?php foreach ($flower['links'] as $platform => $link): ?>
+        <a class="btn alt" href="<?= e($link) ?>" target="_blank" rel="noopener"><?= e(ucfirst($platform)) ?></a>
       <?php endforeach; ?>
     </div>
     <p class="sci" style="margin-top:14px">Never eat a wild plant unless an expert has confirmed it.</p>

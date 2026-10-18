@@ -10,6 +10,7 @@ use App\Core\View;
 use App\Models\Flower\Flower;
 use App\Services\ImageUploader;
 use App\Models\Region\Region;
+use App\Models\Platform\Platform;
 
 class AdminController
 {
@@ -26,6 +27,7 @@ class AdminController
             'edit'           => $editId ? Flower::findById($editId) : null,
             'regionNames'    => Region::names(),
             'regionsEnabled' => (bool) config('admin_region_select', false),
+            'platforms' => Platform::all(),
         ]);
     }
 
@@ -44,6 +46,18 @@ class AdminController
             ))
             : [(string) config('default_region')];
 
+        $posted = (array) $request->input('links', []);
+        $links  = [];
+        foreach (Platform::all() as $p) {
+            $url = trim((string) ($posted[$p['id']] ?? ''));
+            if ($url === '') {
+                continue;                         // optional: empty = no link
+            }
+            if (filter_var($url, FILTER_VALIDATE_URL) && preg_match('#^https?://#i', $url)) {
+                $links[$p['id']] = $url;
+            }
+        }
+
         $data = [
             'name'            => $text('name'),
             'scientific_name' => $text('scientific_name'),
@@ -56,6 +70,7 @@ class AdminController
             'regions'         => $regions,
             'colors'          => $list('colors'),
             'images'          => $list('images'),
+            'links'           => $links,
         ];
 
         if ($data['name'] !== '') {
