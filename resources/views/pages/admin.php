@@ -1,7 +1,12 @@
 <?php
 
 /** @var array|null $edit */ ?>
-<h1>Admin</h1>
+<div class="admin-head">
+    <h1>Admin</h1>
+    <form method="post" action="<?= e(url('/logout')) ?>">
+        <button class="btn alt sm" type="submit">Log out</button>
+    </form>
+</div>
 <!-- TODO <div class="note">No login yet: anyone who opens /admin can change the catalog.</div> -->
 
 <div class="box" style="margin-top:0">

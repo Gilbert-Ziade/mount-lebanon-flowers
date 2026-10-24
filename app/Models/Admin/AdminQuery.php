@@ -23,15 +23,15 @@ class AdminQuery
 
     // PASSWORD RESETS (expiry is computed by the database, so PHP and DB time zones never disagree)
     public static string $InsertReset = "INSERT INTO " . Admin::RESET_TABLE_LABEL
-        . " (" . Admin::USER_ID_LABEL . ", " . Admin::TOKEN_HASH_LABEL . ", " . Admin::EXPIRES_AT_LABEL . ")"
+        . " (" . Admin::ADMIN_ID_LABEL . ", " . Admin::TOKEN_HASH_LABEL . ", " . Admin::EXPIRES_AT_LABEL . ")"
         . " VALUES (?, ?, NOW() + INTERVAL '1 hour')";
 
-    public static string $GetResetAdminId = "SELECT " . Admin::USER_ID_LABEL
+    public static string $GetResetAdminId = "SELECT " . Admin::ADMIN_ID_LABEL
         . " FROM " . Admin::RESET_TABLE_LABEL
         . " WHERE " . Admin::TOKEN_HASH_LABEL . " = ? AND " . Admin::EXPIRES_AT_LABEL . " > NOW()";
 
     public static string $DeleteResetsByAdmin = "DELETE FROM " . Admin::RESET_TABLE_LABEL
-        . " WHERE " . Admin::USER_ID_LABEL . " = ?";
+        . " WHERE " . Admin::ADMIN_ID_LABEL . " = ?";
 
     public static string $DeleteExpiredResets = "DELETE FROM " . Admin::RESET_TABLE_LABEL
         . " WHERE " . Admin::EXPIRES_AT_LABEL . " <= NOW()";

@@ -16,7 +16,7 @@ class Admin
 
     // ---- password_resets table ----
     public const RESET_TABLE_LABEL = 'password_resets';
-    public const USER_ID_LABEL     = 'user_id';
+    public const ADMIN_ID_LABEL    = 'admin_id';
     public const TOKEN_HASH_LABEL  = 'token_hash';
     public const EXPIRES_AT_LABEL  = 'expires_at';
 

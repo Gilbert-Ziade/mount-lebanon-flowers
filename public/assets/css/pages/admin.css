@@ -1,4 +1,18 @@
 /* Admin page: notice and flowers table. (.box and .form-grid live in components.css.) */
+
+.admin-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px
+}
+
+.admin-head form {
+    margin: 0
+}
+
 .note {
     background: #fff4d6;
     border: 1px solid #ecd48a;
