@@ -1,0 +1,38 @@
+/* Login, forgot password and reset password pages. (.box and .form-grid live in components.css.) */
+.auth {
+    max-width: 420px;
+    margin: 30px auto 0
+}
+
+.auth h1 {
+    font-size: 1.8rem
+}
+
+.auth .form-grid {
+    grid-template-columns: 1fr;
+    margin-top: 14px
+}
+
+.auth .btn {
+    width: 100%;
+    margin-top: 16px
+}
+
+.auth .links {
+    margin-top: 16px;
+    font-size: .9rem
+}
+
+.alert {
+    background: #f6e3e1;
+    border: 1px solid #e3b5b0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: .9rem;
+    margin-top: 14px
+}
+
+.alert.ok {
+    background: #e6efe3;
+    border-color: #bcd3b6
+}

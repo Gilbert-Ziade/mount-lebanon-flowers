@@ -1,12 +1,13 @@
 <h1>All flowers</h1>
 <form class="filters" method="get" action="<?= e(url('/flowers')) ?>">
   <input name="q" type="search" placeholder="Search by name or description" value="<?= e($term) ?>" aria-label="Search flowers">
-  <select name="region" aria-label="Region" data-autosubmit>
+  <!-- TODO remove when multiple regions 
+   <select name="region" aria-label="Region" data-autosubmit>
     <option value="">All regions</option>
-    <?php foreach ($regions as $r): ?>
+    <?php /*foreach ($regions as $r): ?>
       <option <?= $r === $region ? 'selected' : '' ?>><?= e($r) ?></option>
-    <?php endforeach; ?>
-  </select>
+    <?php endforeach;*/ ?>
+  </select>-->
   <select name="edible" aria-label="Edible" data-autosubmit>
     <option value="">Edible or not</option>
     <option value="true" <?= $edible === 'true' ? 'selected' : '' ?>>Edible</option>

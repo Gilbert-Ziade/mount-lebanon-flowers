@@ -2,7 +2,7 @@
 
 /** @var array|null $edit */ ?>
 <h1>Admin</h1>
-<div class="note">No login yet: anyone who opens /admin can change the catalog.</div>
+<!-- TODO <div class="note">No login yet: anyone who opens /admin can change the catalog.</div> -->
 
 <div class="box" style="margin-top:0">
     <h2 style="font-size:1.3rem;margin-bottom:12px"><?= $edit ? 'Edit' : 'Add' ?> flower</h2>

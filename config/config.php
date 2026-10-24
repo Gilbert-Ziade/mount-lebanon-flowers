@@ -45,6 +45,7 @@ return [
     'site_name'       => 'Mount Lebanon Flora',
     'site_title'      => 'Wild Flowers of Mount Lebanon',
     'base_url'        => '',                 // '' if served at the domain root, e.g. '/flowers-site' if in a sub-folder
+    'app_url'         => 'http://localhost:8000', // scheme + host only, used in emailed links; https enables Secure cookies
     'whatsapp_number' => '96170000000',      // country code first, no "+"
     'social' => [
         'instagram' => 'https://instagram.com/',
@@ -52,5 +53,13 @@ return [
         'youtube'   => 'https://youtube.com/',
     ],
     'admin_region_select' => false,        // false = locked to default_region, true = multi-select
-    'default_region'      => 'Rechmaya'
+    'default_region'      => 'Rechmaya',
+
+    'jwt_secret' => JWT_SECRET,
+    'mail' => [
+        'host' => 'smtp.gmail.com',        // TODO remove change to your SMTP provider
+        'port' => 587,                     // STARTTLS
+        'user' => NO_REPLY_EMAIL,
+        'pass' => EMAIL_PASSWORDS,
+    ],
 ];
