@@ -6,8 +6,8 @@ $socials = ['instagram' => 'Instagram', 'facebook' => 'Facebook', 'youtube' => '
 <div class="detail">
   <div class="gallery">
     <div class="big" id="gmain" style="<?= e(flower_bg($flower)) ?>">
-      <?php foreach ($slides as $i => $_): ?>
-        <div class="slide" <?= $i > 0 ? 'hidden' : '' ?>><?= flower_slide($flower, $i, 260) ?></div>
+      <?php foreach ($slides as $i => $s): ?>
+        <div class="slide" style="<?= is_string($s) ? e('--bg:url(' . image_thumb($s) . ');') : '' ?>" <?= $i > 0 ? 'hidden' : '' ?>><?= flower_slide($flower, $i, 260) ?></div>
       <?php endforeach; ?>
     </div>
     <?php if (count($slides) > 1): ?>

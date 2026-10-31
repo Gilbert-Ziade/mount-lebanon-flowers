@@ -70,15 +70,28 @@ function flower_slides(array $flower): array
 }
 
 /** HTML for one slide (real <img> or generated SVG). */
-function flower_slide(array $flower, int $index, int $size = 120): string
+function flower_slide(array $flower, int $index, int $size = 120, bool $thumb = false): string
 {
     $slide = flower_slides($flower)[$index] ?? null;
 
     if (is_string($slide)) {
-        $src = preg_match('#^(https?:)?//|^/#', $slide) ? $slide : asset('img/flowers/' . $slide);
-        return sprintf('<img src="%s" alt="%s" loading="lazy">', e($src), e($flower['name'] . ' photo ' . ($index + 1)));
+        $src = $thumb ? image_thumb($slide) : image_src($slide);
+        return sprintf('<img src="%s" alt="%s" loading="lazy" decoding="async">',
+            e($src), e($flower['name'] . ' photo ' . ($index + 1)));
     }
     return flower_art($flower['colors'], $size, (int) $slide);
+}
+
+/** abc.jpg -> abc_thumb.jpg when it exists, otherwise the original (old uploads, external URLs). */
+function image_thumb(string $file): string
+{
+    if (preg_match('#^(https?:)?//|^/#', $file)) {
+        return $file;
+    }
+    $thumb = preg_replace('/(\.\w+)$/', '_thumb$1', $file);
+    return is_file(\App\Services\ImageUploader::dir() . $thumb)
+        ? asset('img/flowers/' . $thumb)
+        : image_src($file);
 }
 
 /** Soft background color taken from the flower's first color. */

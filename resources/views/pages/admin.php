@@ -59,7 +59,9 @@
                 </div>
             <?php endif; ?>
             <label class="full"><?= $edit ? 'Add more images' : 'Images' ?> (you can select several)
-                <input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple>
+                <div class="scroll">
+                    <input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple>
+                </div>
             </label>
             <label class="full">Description<textarea name="description" rows="2"><?= e($edit['description'] ?? '') ?></textarea></label>
             <label class="full">Benefits<textarea name="benefits" rows="2"><?= e($edit['benefits'] ?? '') ?></textarea></label>
