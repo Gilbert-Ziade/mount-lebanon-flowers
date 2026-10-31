@@ -41,3 +41,12 @@ document.querySelectorAll('form[data-confirm]').forEach(function (form) {
     if (!confirm(form.dataset.confirm)) e.preventDefault();
   });
 });
+
+// ----- Catalog search: clicking the X (clearing the field) shows all flowers again -----
+document.querySelectorAll('input[type="search"][data-clear-submit]').forEach(function (input) {
+  var last = input.value;                       // what the page was loaded with
+  input.addEventListener('search', function () {
+    if (input.value === '' && last !== '') input.form.submit();
+    last = input.value;
+  });
+});

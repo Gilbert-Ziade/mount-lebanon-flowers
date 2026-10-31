@@ -1,7 +1,6 @@
 <h1>All flowers</h1>
 <form class="filters" method="get" action="<?= e(url('/flowers')) ?>">
-  <input name="q" type="search" placeholder="Search by name or description" value="<?= e($term) ?>" aria-label="Search flowers">
-  <!-- TODO remove when multiple regions 
+  <input name="q" type="search" data-autosubmit data-clear-submit placeholder="Search by name or description" value="<?= e($term) ?>" aria-label="Search flowers"> <!-- TODO remove when multiple regions 
    <select name="region" aria-label="Region" data-autosubmit>
     <option value="">All regions</option>
     <?php /*foreach ($regions as $r): ?>
@@ -14,6 +13,9 @@
     <option value="false" <?= $edible === 'false' ? 'selected' : '' ?>>Not edible</option>
   </select>
   <noscript><button class="btn sm" type="submit">Filter</button></noscript>
+  <?php if ($term !== '' || $edible !== ''): ?>
+    <a class="btn alt sm" href="<?= e(url('/flowers')) ?>" style="align-self:center">Clear filters</a>
+  <?php endif; ?>
 </form>
 
 <?php if ($flowers): ?>
