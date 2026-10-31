@@ -7,8 +7,6 @@
         <button class="btn alt sm" type="submit">Log out</button>
     </form>
 </div>
-<!-- TODO <div class="note">No login yet: anyone who opens /admin can change the catalog.</div> -->
-
 <div class="box" style="margin-top:0">
     <h2 style="font-size:1.3rem;margin-bottom:12px"><?= $edit ? 'Edit' : 'Add' ?> flower</h2>
     <form method="post" action="<?= e(url('/admin/save')) ?>" enctype="multipart/form-data">

@@ -3,7 +3,7 @@
 
 use App\Security\JWT\AuthMiddleware;
 
-$router->get('/',                'PageController@home');
+$router->get('/',                'FlowerPageController@index'); // $router->get('/',                'PageController@home'); // TODO fix this later
 $router->get('/flowers',         'FlowerPageController@index');   // all flowers + filters
 $router->get('/flowers/{slug}',  'FlowerPageController@show');    // one flower
 $router->get('/about',           'PageController@about');

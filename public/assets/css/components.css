@@ -45,9 +45,6 @@
     -webkit-tap-highlight-color: transparent;
     box-shadow: 0 1px 2px rgba(28, 42, 34, .05);
     isolation: isolate;
-    /* new stacking context, forces correct clipping */
-    transform: translateZ(0);
-    /* Safari: clip composited children */
 }
 
 .thumb {
@@ -56,7 +53,10 @@
     overflow: hidden;
     background-color: rgba(0, 0, 0, .04);
     isolation: isolate;
-    border-radius: 17px 17px 0 0; /* card radius (18px) minus the 1px border */
+    border-radius: 17px 17px 0 0;
+    /* Safari: hard clip, also applied to blurred / transformed children */
+    -webkit-clip-path: inset(0 round 17px 17px 0 0);
+    clip-path: inset(0 round 17px 17px 0 0);
 }
 
 /* blurred copy of the photo fills the empty sides of tall/wide images */
@@ -72,6 +72,7 @@
     background-position: center;
     -webkit-filter: blur(18px) saturate(1.1);
     filter: blur(18px) saturate(1.1);
+    border-radius: inherit;
 }
 
 /* the real photo: always fully visible */
@@ -83,6 +84,7 @@
     height: 100%;
     object-fit: contain;
     display: block;
+    border-radius: inherit;
 }
 
 /* generated placeholder illustration (flowers without photos) */

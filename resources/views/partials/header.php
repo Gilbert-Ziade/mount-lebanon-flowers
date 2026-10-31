@@ -1,7 +1,7 @@
 <?php
 $active = $active ?? '';
 $links = [
-    'home'    => ['/',        'Home'],
+    //'home'    => ['/',        'Home'], TODO to remove later
     'catalog' => ['/flowers', 'All flowers'],
     'about'   => ['/about',   'About'],
     'missing' => ['/missing', "Can't find a flower?"],

@@ -3,12 +3,20 @@
 <form class="box" method="post" action="<?= e(url('/missing/whatsapp')) ?>" target="_blank" rel="noopener">
   <div class="form-grid">
     <label>Your name<input name="name" placeholder="Optional" maxlength="80"></label>
-    <label>Region
-      <select name="region">
-        <?php foreach ($regions as $r): ?><option><?= e($r) ?></option><?php endforeach; ?>
-        <option>Other</option>
-      </select>
-    </label>
+    <?php if ($regionsEnabled): ?>
+      <label>Region
+        <select name="region">
+          <?php foreach ($regions as $r): ?><option><?= e($r) ?></option><?php endforeach; ?>
+          <option>Other</option>
+        </select>
+      </label>
+    <?php else: ?>
+      <label>Region
+        <select name="region" disabled aria-describedby="region-note">
+          <option><?= e($defaultRegion) ?></option>
+        </select>
+      </label>
+    <?php endif; ?>
     <label class="full">Exact location<input name="location" placeholder="Village, road, landmark or Google Maps link" maxlength="300"></label>
     <label class="full">Notes<textarea name="notes" rows="3" placeholder="Color, height, what it grows next to..." maxlength="600"></textarea></label>
   </div>
