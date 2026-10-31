@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controllers;
@@ -24,8 +25,11 @@ class PageController
     public function about(): string
     {
         return View::render('pages/about', [
-            'title'  => 'About · ' . config('site_title'),
-            'active' => 'about',
+            'title'       => 'About · ' . config('site_title'),
+            'active'      => 'about',
+            'styles'      => ['about'],
+            'flowerCount' => count(Flower::all()),
+            //'regionCount' => count(Region::names()), TODO to remove when multiple regions
         ]);
     }
 }

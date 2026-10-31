@@ -1,0 +1,373 @@
+/* About page: hero collage, stats, story, steps, team and social cards. */
+main>section {
+    margin-bottom: 64px
+}
+
+main>section:last-child {
+    margin-bottom: 0
+}
+
+.eyebrow {
+    display: inline-block;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--poppy);
+    margin-bottom: 10px
+}
+
+main>section>h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    margin-bottom: 22px
+}
+
+/* ---------- Hero ---------- */
+.about-hero {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 40px;
+    align-items: center;
+    padding-top: 10px
+}
+
+.about-hero h1 {
+    font-size: clamp(2.1rem, 4.6vw, 3.3rem);
+    margin-bottom: 16px
+}
+
+.about-hero p {
+    color: var(--mute);
+    max-width: 50ch;
+    margin-bottom: 24px
+}
+
+.about-hero__media {
+    position: relative;
+    padding: 0 0 36px 36px
+}
+
+.photo {
+    margin: 0;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 30px rgba(28, 42, 34, .12)
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+.photo--main {
+    aspect-ratio: 4 / 3.4;
+    border-radius: 28px
+}
+
+.photo--small {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 42%;
+    aspect-ratio: 1;
+    border-radius: 22px;
+    border: 5px solid var(--bg)
+}
+
+/* ---------- Stats ---------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /*repeat(3, 1fr); TODO fix this later when multiple regions*/
+    background: var(--green);
+    color: #fff;
+    border-radius: 22px;
+    padding: 26px 10px
+}
+
+.stats div {
+    text-align: center;
+    padding: 4px 10px
+}
+
+.stats div+div {
+    border-left: 1px solid rgba(255, 255, 255, .18)
+}
+
+.stats b {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.1
+}
+
+.stats span {
+    color: #cfe0d2;
+    font-size: .9rem
+}
+
+/* ---------- Story ---------- */
+.story {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 40px
+}
+
+.story h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem)
+}
+
+.story__body p {
+    color: var(--mute);
+    margin-bottom: 14px
+}
+
+/* ---------- Steps ---------- */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px
+}
+
+.step {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 22px
+}
+
+.step__num {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fbe6e4;
+    color: var(--poppy);
+    font-weight: 700;
+    margin-bottom: 14px
+}
+
+.step h3 {
+    font-size: 1.2rem;
+    margin-bottom: 6px
+}
+
+.step p {
+    color: var(--mute);
+    font-size: .95rem
+}
+
+/* ---------- Team ---------- */
+.team {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px
+}
+
+.member {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 26px 22px;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(28, 42, 34, .05)
+}
+
+.member__avatar {
+    width: 112px;
+    height: 112px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px var(--line)
+}
+
+.member__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.member h3 {
+    font-size: 1.2rem
+}
+
+.member__role {
+    color: var(--poppy);
+    font-weight: 700;
+    font-size: .85rem;
+    margin: 2px 0 10px
+}
+
+.member p {
+    color: var(--mute);
+    font-size: .95rem
+}
+
+/* ---------- Social ---------- */
+.follow {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    padding: 34px 28px
+}
+
+.follow__head {
+    text-align: center;
+    margin-bottom: 24px
+}
+
+.follow__head h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    margin-bottom: 6px
+}
+
+.follow__head p {
+    color: var(--mute)
+}
+
+.social-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px
+}
+
+.social {
+    --c1: #333;
+    --c2: #555;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    box-shadow: 0 6px 16px rgba(28, 42, 34, .15)
+}
+
+.social--instagram {
+    --c1: #f58529;
+    --c2: #c13584
+}
+
+.social--facebook {
+    --c1: #1877f2;
+    --c2: #0b57c9
+}
+
+.social--youtube {
+    --c1: #ff3b30;
+    --c2: #b3000f
+}
+
+.social__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .2)
+}
+
+.social__icon svg {
+    width: 26px;
+    height: 26px
+}
+
+.social__text {
+    flex: 1;
+    display: grid;
+    line-height: 1.3
+}
+
+.social__text small {
+    opacity: .85;
+    font-size: .82rem
+}
+
+.social__arrow {
+    font-size: 1.3rem;
+    opacity: .85
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .social {
+        transition: transform .2s, box-shadow .2s
+    }
+
+    .social:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(28, 42, 34, .22)
+    }
+
+    .social:hover .social__arrow {
+        transform: translate(2px, -2px)
+    }
+
+    .social__arrow {
+        transition: transform .2s
+    }
+
+    .member {
+        transition: transform .2s, box-shadow .2s
+    }
+
+    .member:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(28, 42, 34, .1)
+    }
+}
+
+/* ---------- CTA ---------- */
+.about-cta {
+    text-align: center;
+    background: #e6efe3;
+    border-radius: 26px;
+    padding: 40px 22px
+}
+
+.about-cta h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 8px
+}
+
+.about-cta p {
+    color: var(--mute);
+    margin: 0 auto 18px;
+    max-width: 48ch
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+    main>section {
+        margin-bottom: 48px
+    }
+
+    .about-hero,
+    .story {
+        grid-template-columns: 1fr;
+        gap: 26px
+    }
+
+    .about-hero__media {
+        padding: 0 0 30px 20px
+    }
+
+    .stats {
+        padding: 18px 4px
+    }
+
+    .follow {
+        padding: 26px 16px
+    }
+}
