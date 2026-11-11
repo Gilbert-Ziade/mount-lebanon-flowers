@@ -1,0 +1,16 @@
+# Used on InfinityFree, where the whole project is uploaded INSIDE htdocs/.
+# Locally, `php -S -t public` is used instead and this file is ignored.
+#
+# InfinityFree restricts PHP (open_basedir) to htdocs/, so the app code and
+# .dev.env must live inside htdocs/. This file keeps them private and sends
+# every visitor request into public/, which is the real web root.
+RewriteEngine On
+
+# 1) Block direct web access to private code, config and secrets
+RewriteRule ^(app|config|resources|routes|utils|seeds|storage|\.git)(/|$) - [F,L]
+RewriteRule (^|/)\.(dev\.)?env$ - [F,L]
+RewriteRule ^(README\.md|\.gitignore)$ - [F,L]
+
+# 2) Serve public/ as the website (skip requests already pointing into public/)
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]

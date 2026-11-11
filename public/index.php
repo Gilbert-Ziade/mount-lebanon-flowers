@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 require __DIR__ . '/../app/bootstrap.php';
 
+use App\Core\DatabaseException;
+use App\Core\ErrorLogger;
+use App\Core\Response;
 use App\Core\Router;
+use App\Core\View;
 
 $router = new Router();
 
@@ -17,4 +21,17 @@ if ($base !== '' && str_starts_with($path, $base)) {
     $path = substr($path, strlen($base)) ?: '/';
 }
 
-$router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $path);
+try {
+    $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $path);
+} catch (PDOException | DatabaseException $e) {
+    // Full details go to storage/logs/error.log; visitors only see a generic message.
+    ErrorLogger::log('ERROR', 'Database unavailable', $e);
+
+    if (str_starts_with($path, '/api/')) {
+        Response::json(['error' => 'Service temporarily unavailable'], 503);
+    }
+
+    http_response_code(503);
+    header('Content-Type: text/html; charset=utf-8');
+    echo View::render('errors/database', ['title' => 'Temporarily unavailable']);
+}

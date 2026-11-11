@@ -82,11 +82,8 @@ class DbConnection
                     ]
                 );
             } catch (PDOException $e) {
-                error_log(
-                    'DB connection failed: ' . $e->getMessage()
-                );
-
-                throw new RuntimeException(
+                // Logged by public/index.php; $e stays attached as the previous exception.
+                throw new DatabaseException(
                     'Database connection failed.',
                     0,
                     $e

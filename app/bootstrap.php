@@ -52,3 +52,6 @@ spl_autoload_register(function (string $class): void {
 
 
 require BASE_PATH . '/app/helpers.php';
+
+// Write warnings, uncaught exceptions and fatal errors to storage/logs/error.log
+App\Core\ErrorLogger::register();
